@@ -10,7 +10,9 @@ const create = async (
   categories,
   dateReleased,
   discontinued
-) => {};
+) => {
+  
+};
 
 const getAll = async () => {};
 
@@ -19,3 +21,5 @@ const get = async (id) => {};
 const remove = async (id) => {};
 
 const rename = async (id, newProductName) => {};
+
+export {create, getAll, get, remove, rename}
