@@ -11,6 +11,7 @@
   "author": "Samuel Miller 10468142",
   "license": "ISC",
   "dependencies": {
+    "date-fns": "^3.3.1",
     "mongodb": "^6.3.0"
   }
 }
