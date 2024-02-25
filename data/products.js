@@ -69,11 +69,56 @@ const create = async (
 
 };
 
-const getAll = async () => {};
+const getAll = async () => {
+  const productCollection = await products();
+    let productList = await productCollection.find({}).toArray();
 
-const get = async (id) => {};
+    if (!productList){
+      throw new Error("could not get all the products.");
+    }
 
-const remove = async (id) => {};
+    productList = productList.map((element) => {
+      element._id = element._id.toString();
+      return element;
+    });
+    return productList;
+};
+
+const get = async (id) => {
+  let x = new ObjectId();
+  id = helper.checkIfString(id);
+  if(ObjectId.isValid(id) === false) {
+    throw new Error("invalid object ID.");
+  }
+
+  const productCollection = await products();
+  const product = await productCollection.findOne({_id: ObjectId.createFromHexString(id)});
+
+  if (product === null) {
+    throw new Error("No product with that id.");
+  }
+
+  product._id = product._id.toString();
+  return product;
+};
+
+const remove = async (id) => {
+  let x = new ObjectId();
+  id = helper.checkIfString(id);
+
+  if(ObjectId.isValid(id) === false) {
+    throw new Error("invalid object ID.");
+  }
+
+  const productCollection = await products();
+  const deletionInfo = await productCollection.findOneAndDelete({_id: ObjectId.createFromHexString(id)});
+
+  if (!deletionInfo) {
+    throw new Error(`Could not delete product with id of ${id}`);
+  }
+
+  return `${deletionInfo.productName} has been deleted.`;
+};
 
 const rename = async (id, newProductName) => {};
 
