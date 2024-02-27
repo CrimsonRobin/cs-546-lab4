@@ -3,6 +3,7 @@ import { products } from "../config/mongoCollections.js";
 import * as helper from "../helpers.js";
 import {isValid, isMatch} from "date-fns";
 import {ObjectId} from "mongodb";
+import {isHttpUri} from "valid-url";
 
 const create = async (
   productName,
@@ -29,6 +30,10 @@ const create = async (
   }
   if(manufacturerWebsite.length < 20) {
     throw new Error("given website is not at least 20 characters long.");
+  }
+
+  if(!isHttpUri(manufacturerWebsite)) {
+    throw new Error("url is formatted incorrectly.");
   }
 
   helper.checkIfValidArray(keywords);
@@ -85,7 +90,6 @@ const getAll = async () => {
 };
 
 const get = async (id) => {
-  let x = new ObjectId();
   id = helper.checkIfString(id);
   if(ObjectId.isValid(id) === false) {
     throw new Error("invalid object ID.");
@@ -103,7 +107,6 @@ const get = async (id) => {
 };
 
 const remove = async (id) => {
-  let x = new ObjectId();
   id = helper.checkIfString(id);
 
   if(ObjectId.isValid(id) === false) {
@@ -117,9 +120,36 @@ const remove = async (id) => {
     throw new Error(`Could not delete product with id of ${id}`);
   }
 
-  return `${deletionInfo.productName} has been deleted.`;
+  return `${deletionInfo.productName} has been successfully deleted!`;
 };
 
-const rename = async (id, newProductName) => {};
+const rename = async (id, newProductName) => {
+  id = helper.checkIfString(id);
+
+  if(ObjectId.isValid(id) === false) {
+    throw new Error("invalid object ID.");
+  }
+
+  newProductName = helper.checkIfString(newProductName);
+
+  const product = await get(id);
+  if(product.productName === newProductName) {
+    throw new Error("new product name is same as the current product name.");
+  }
+
+  const productCollection = await products();
+  const updateInfo = await productCollection.findOneAndUpdate(
+    {_id: ObjectId.createFromHexString(id)}, 
+    {$set: {productName: newProductName}},
+    {returnDocument: "after"}
+  );
+
+  if (!updateInfo) {
+    throw new Error("the product could not be updated successfully.");
+  }
+
+  updateInfo._id = updateInfo._id.toString();
+  return updateInfo;
+};
 
 export {create, getAll, get, remove, rename}
