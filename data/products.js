@@ -20,10 +20,10 @@ const create = async (
   productName = helper.checkIfString(productName);
   productDescription = helper.checkIfString(productDescription);
   modelNumber = helper.checkIfString(modelNumber);
+  price = helper.checkIfPriceValid(price);
   manufacturer = helper.checkIfString(manufacturer);
   manufacturerWebsite = helper.checkIfString(manufacturerWebsite);
   dateReleased = helper.checkIfString(dateReleased);
-  price = helper.checkIfPriceValid(price);
 
   if(manufacturerWebsite.toLowerCase().startsWith("http://www.") === false || manufacturerWebsite.toLowerCase().endsWith(".com") === false) {
     throw new Error("given website does not start with http:/www. or ends in .com");
@@ -40,7 +40,7 @@ const create = async (
   helper.checkIfValidArray(categories);
   
 
-  if(isValid(new Date(dateReleased)) === false || isMatch(dateReleased, "MM/dd/yyyy")) {
+  if(isValid(new Date(dateReleased)) === false || isMatch(dateReleased, "MM/dd/yyyy") === false) {
     throw new Error("date released is not a valid date.");
   }
 
@@ -69,7 +69,7 @@ const create = async (
 
     const newId = insertInfo.insertedId.toString();
 
-    const product = await this.get(newId);
+    const product = await get(newId);
     return product;
 
 };
@@ -92,14 +92,14 @@ const getAll = async () => {
 const get = async (id) => {
   id = helper.checkIfString(id);
   if(ObjectId.isValid(id) === false) {
-    throw new Error("invalid object ID.");
+    throw new Error(`invalid object ID: ${id}.`);
   }
 
   const productCollection = await products();
   const product = await productCollection.findOne({_id: ObjectId.createFromHexString(id)});
 
   if (product === null) {
-    throw new Error("No product with that id.");
+    throw new Error(`No product with ID: ${id}.`);
   }
 
   product._id = product._id.toString();
@@ -110,7 +110,7 @@ const remove = async (id) => {
   id = helper.checkIfString(id);
 
   if(ObjectId.isValid(id) === false) {
-    throw new Error("invalid object ID.");
+    throw new Error(`invalid object ID: ${id}.`);
   }
 
   const productCollection = await products();
@@ -127,7 +127,7 @@ const rename = async (id, newProductName) => {
   id = helper.checkIfString(id);
 
   if(ObjectId.isValid(id) === false) {
-    throw new Error("invalid object ID.");
+    throw new Error(`invalid object ID: ${id}.`);
   }
 
   newProductName = helper.checkIfString(newProductName);
