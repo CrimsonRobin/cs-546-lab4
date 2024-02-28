@@ -26,14 +26,14 @@ const create = async (
   dateReleased = helper.checkIfString(dateReleased);
 
   if(manufacturerWebsite.toLowerCase().startsWith("http://www.") === false || manufacturerWebsite.toLowerCase().endsWith(".com") === false) {
-    throw new Error("given website does not start with http:/www. or ends in .com");
+    throw new Error(`${manufacturerWebsite} does not start with http://www. or ends in .com`);
   }
   if(manufacturerWebsite.length < 20) {
-    throw new Error("given website is not at least 20 characters long.");
+    throw new Error(`${manufacturerWebsite} is not at least 20 characters long.`);
   }
 
   if(!isHttpUri(manufacturerWebsite)) {
-    throw new Error("url is formatted incorrectly.");
+    throw new Error(`${manufacturerWebsite} is formatted incorrectly.`);
   }
 
   helper.checkIfValidArray(keywords);
@@ -41,11 +41,11 @@ const create = async (
   
 
   if(isValid(new Date(dateReleased)) === false || isMatch(dateReleased, "MM/dd/yyyy") === false) {
-    throw new Error("date released is not a valid date.");
+    throw new Error(`${dateReleased} is not a valid date.`);
   }
 
   if(typeof discontinued !== "boolean") {
-    throw new Error("discontinued is not a boolean.");
+    throw new Error(`${discontinued} is not a boolean.`);
   }
 
   let newProduct = {

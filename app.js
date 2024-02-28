@@ -29,7 +29,7 @@ let monitor = undefined;
 let badProduct = undefined;
 
 try {
-    cpu = await products.create("i7-10700k", "Intel CPU", "12345678", 411, "Intel", 
+    cpu = await products.create("    i7-10700k    ", "Intel CPU", "12345678", 411, "Intel", 
     "http://www.intel.com", ["CPU", "Intel", "i7", "10700k", "central processing unit", "pc"], 
     ["Electronics", "CPU", "Processors", "Intel Core"], "04/10/2020", false);
     console.log("First Product has been created!");
@@ -73,7 +73,8 @@ try {
 }
 
 try {
-    await products.remove(gpu._id.toString());
+   gpu = await products.remove(gpu._id.toString());
+   console.log(gpu);
 } catch (error) {
     console.error(error.message);
 }
@@ -89,56 +90,70 @@ try {
 //Test Cases meant to throw Errors
 try {
     badProduct = await products.create(90);
-    console.log("You shouldn't be seeing this. Line 92");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }
 
 try {
     badProduct = await products.create("Test", true, "test", 9, "test", "test", [], [], "", true);
-    console.log("You shouldn't be seeing this. Line 99");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }
 
 try {
     badProduct = await products.create("test", "test", "test", "badinput", "test", "test", [], [], "20", true);
-    console.log("You shouldn't be seeing this. Line 106");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }
 
 try {
     badProduct = await products.create("test", "test", "test", 99.99999, "test", "test", [], [], "20", true);
-    console.log("You shouldn't be seeing this. Line 106");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }
 
 try {
     badProduct = await products.create("test", "test", "test", 90, "tst", "badinput", [], [], "20", true);
-    console.log("You shouldn't be seeing this. Line 113");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }
 
 try {
     badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.com", [], [], "20", true);
-    console.log("You shouldn't be seeing this. Line 120");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }
 
 try {
     badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.abdc{}}}5667.com", [], [], "20", true);
-    console.log("You shouldn't be seeing this. Line 127");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }
 
 try {
     badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", "badinput", [], "20", true);
-    console.log("You shouldn't be seeing this. Line 134");
+    console.log("You shouldn't be seeing this.");
+} catch (error) {
+    console.error(error.message);
+}
+
+try {
+    badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", [], [], "20", true);
+    console.log("You shouldn't be seeing this.");
+} catch (error) {
+    console.error(error.message);
+}
+
+try {
+    badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", ["", "", "good input"], [], "20", true);
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }
@@ -146,7 +161,7 @@ try {
 try {
     badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", 
     ["Good input", "good input", 90, false], [], "20", true);
-    console.log("You shouldn't be seeing this. Line 142");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }
@@ -154,7 +169,23 @@ try {
 try {
     badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", ["Good input", "good input"], 
     ["good input"], "2020-10-02", true);
-    console.log("You shouldn't be seeing this. Line 150");
+    console.log("You shouldn't be seeing this.");
+} catch (error) {
+    console.error(error.message);
+}
+
+try {
+    badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", ["Good input", "good input"], 
+    ["good input"], "9/31/2022", true);
+    console.log("You shouldn't be seeing this.");
+} catch (error) {
+    console.error(error.message);
+}
+
+try {
+    badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", ["Good input", "good input"], 
+    ["good input"], "2/30/1995", true);
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }
@@ -162,35 +193,43 @@ try {
 try {
     badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", ["Good input", "good input"], 
     ["good input"], "02/10/2020", 100);
-    console.log("You shouldn't be seeing this. Line 158");
+    console.log("You shouldn't be seeing this.");
+} catch (error) {
+    console.error(error.message);
+}
+
+try {
+    badProduct = await products.create("test", "test", "test", 99.99000000, "tst", "http://www.google.com", ["Good input", "good input"], 
+    ["good input"], "02/10/2020", "badinput");
+    console.log("You shouldn't see this.");
 } catch (error) {
     console.error(error.message);
 }
 
 try {
     await products.remove("67890123");
-    console.log("You shouldn't be seeing this. Line 165");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.log(error.message);
 }
 
 try {
     await products.rename("5427652", "new name");
-    console.log("You shouldn't be seeing this. Line 172");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.log(error.message);
 }
 
 try {
     await products.rename(monitor._id.toString(), 300);
-    console.log("You shouldn't be seeing this. Line 179");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.log(error.message);
 }
 
 try {
     badProduct = await products.get("4444444");
-    console.log("You shouldn't be seeing this. Line 186");
+    console.log("You shouldn't be seeing this.");
 } catch (error) {
     console.error(error.message);
 }

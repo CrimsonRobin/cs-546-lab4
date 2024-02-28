@@ -16,19 +16,19 @@ function checkIfString(str) {
 
 function checkIfPriceValid(price) {
     if(typeof price !== "number") {
-        throw new Error("given price is not a number.");
+        throw new Error(`${price} is not a number.`);
     }
     if(Number.isFinite(price) === false) {
-        throw new Error("given price is not a valid number.");
+        throw new Error(`${price} is not a valid number.`);
     }
     if(price <= 0) {
-        throw new Error("given price is not greater than 0.");
+        throw new Error(`${price} is not greater than 0.`);
     }
 
     if(Number.isInteger(price) === false) {
         const arrayCheck = price.toString().split(".");
         if(arrayCheck.at(1).length > 2) {
-            throw new Error("price has more than two decimal points.");
+            throw new Error(`${price} has more than two decimal points.`);
         }
     }
     
@@ -37,10 +37,10 @@ function checkIfPriceValid(price) {
 
 function checkIfValidArray(arr) {
     if(Array.isArray(arr) === false) {
-        throw new Error("given array is not an array.");
+        throw new Error(`${arr} is not an array.`);
     }
     if(arr.length < 1) {
-        throw new Error("given array does not have at least one element.");
+        throw new Error(`${arr} does not have at least one element.`);
     }
     for(let x of arr) {
         checkIfString(x);
