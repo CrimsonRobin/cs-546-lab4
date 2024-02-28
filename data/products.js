@@ -44,6 +44,15 @@ const create = async (
     throw new Error(`${dateReleased} is not a valid date.`);
   }
 
+  if(new Date(dateReleased) > Date.now()) {
+    throw new Error(`${dateReleased} is not a valid date.`);
+  }
+
+  if(dateReleased.length !== 10) {
+    throw new Error(`${dateReleased} is not in mm/dd/yyyy format.`);
+  }
+
+
   if(typeof discontinued !== "boolean") {
     throw new Error(`${discontinued} is not a boolean.`);
   }

@@ -192,6 +192,22 @@ try {
 
 try {
     badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", ["Good input", "good input"], 
+    ["good input"], "3/15/2030", true);
+    console.log("You shouldn't be seeing this.");
+} catch (error) {
+    console.error(error.message);
+}
+
+try {
+    badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", ["Good input", "good input"], 
+    ["good input"], "3/5/2023", true);
+    console.log("You shouldn't be seeing this.");
+} catch (error) {
+    console.error(error.message);
+}
+
+try {
+    badProduct = await products.create("test", "test", "test", 90, "tst", "http://www.google.com", ["Good input", "good input"], 
     ["good input"], "02/10/2020", 100);
     console.log("You shouldn't be seeing this.");
 } catch (error) {
